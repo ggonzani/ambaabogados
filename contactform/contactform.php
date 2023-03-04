@@ -1,27 +1,32 @@
-<?php 
-
+<?php
 $nombre = $_POST['name'];
 $mail = $_POST['email'];
-
 $message = $_POST['message'];
+$destinatario = 'ggonzani@gmail.com'; // en esta línea va el mail del destinatario.
 
-$header = 'from: '.$mail."\r\n";
-$header .= "X-Mailer:PHP/".phpversion()."\r\n";
-$header .= "Mime-Version:1.0 \r\n";
-$header .= "content-Type:text/plain";
+if (!$_POST)
+?>
 
-$message = "este message fue enviado por: ".$name."\r\n";
-$message .= "Su e-mail es: ".$mail."\r\n";
+<?php
+else{
+	 
+    $cuerpo = "Nombre y apellido: " . $_POST["name"] . "\r\n"; 
+    $cuerpo .= "Email: " . $_POST["email"] . "\r\n";
+	$cuerpo .= "Consulta: " . $_POST["mesagge"] . "\r\n";
+	//las líneas de arriba definen el contenido del mail. Las palabras que están dentro de $_POST[""] deben coincidir con el "name" de cada campo. 
+	// Si se agrega un campo al formulario, hay que agregarlo acá.
 
-$message .= "message: ".$_POST['message']."\r\n";
-$message .= "enviado el: ".date('d/m/Y',time());
+    $headers  = "MIME-Version: 1.0\n";
+    $headers .= "Content-type: text/plain; charset=utf-8\n";
+    $headers .= "X-Priority: 3\n";
+    $headers .= "X-MSMail-Priority: Normal\n";
+    $headers .= "X-Mailer: php\n";
+    $headers .= "From: \"".$_POST['nombre']." ".$_POST['apellido']."\" <".$remitente.">\n";
 
-
-$para = 'ggonzani@gmail.com';
-$asunto = 'Consulta abogados laboralistas de mi web';
-
-if(mail($para,$asunto,utf8_decode($message),$header))
-echo "<script type='text/javascript'>alert('Su mensaje ha sido enviado. Le responderemos a la brevedad');</script>";
-echo "<script type='text/javascript'>window.location.href='http://index.html';</script>";
-
- ?>
+    mail($destinatario, $message, $cuerpo, $headers);
+    
+    echo "<script type='text/javascript'>alert('Su mensaje ha sido enviado. Le responderemos a la brevedad');</script>";
+echo "<script type='text/javascript'>window.location.href='http://google.com';</script>";
+    
+}
+?>
